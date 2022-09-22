@@ -1,0 +1,5 @@
+{% if connection_delay > 0 %}
+Nie śpiesz się! Pociąg ze stacji {{ departure_from|safe }} do stacji {{ arrival_at|safe }}, o planowanym czasie odjazu {{ departure_time|safe }}, jest opóźniony o {{ connection_delay|safe }}{% if connection_delay == 1 %} minutę.{% elif connection_delay > 1 and connection_delay < 5 %} minuty.{% else %} minut.{% endif %}
+{% else %}
+Spokojnie! Wygląda na to, że pociąg ze stacji {{ departure_from|safe }} do stacji {{ arrival_at|safe }}, o planowanym czasie odjazu {{ departure_time|safe }}, przyjedzie bez opóźnienia.
+{% endif %}

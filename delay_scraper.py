@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-def scrape(data):
+def scrape_connection_delay(data: dict) -> int:
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get("https://portalpasazera.pl/")
     wait = WebDriverWait(driver, 1)
@@ -24,9 +24,9 @@ def scrape(data):
 
     driver.find_element(By.ID, "departureFrom").send_keys(data["departure_from"])
     driver.find_element(By.ID, "arrivalTo").send_keys(data["arrival_at"])
-    driver.find_element(By.ID, "main-search__dateStart").send_keys(data["date"].strftime("%m.%d.%Y"))
+    driver.find_element(By.ID, "main-search__dateStart").send_keys(data["departure_date"].strftime("%m.%d.%Y"))
     driver.find_element(By.ID, "main-search__timeStart").clear()
-    driver.find_element(By.ID, "main-search__timeStart").send_keys(data["time"].strftime("%H:%M"))
+    driver.find_element(By.ID, "main-search__timeStart").send_keys(data["departure_time"].strftime("%H:%M"))
     driver.find_element(By.XPATH, "/html/body/div[6]/div/form/div[11]/button").click() # search
 
     try:
@@ -40,9 +40,9 @@ def scrape(data):
         delay = delay_el.text.split()[0].replace("(+", "")
         return int(delay)
     except NoSuchElementException:
-        response = 0
+        delay = 0
         driver.quit()
-        return response   
+        return delay   
     finally:
         driver.quit()
 
